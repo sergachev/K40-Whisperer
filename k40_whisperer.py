@@ -1278,7 +1278,7 @@ class Application(Frame):
     ##########################################################################
     ##########################################################################
     def Check_All_Variables(self):
-        pass
+        return 0
 ##        MAIN_error_cnt= \
 ##        self.entry_set(self.Entry_Yscale, self.Entry_Yscale_Check()    ,2) +\
 ##        self.entry_set(self.Entry_Toptol, self.Entry_Toptol_Check()    ,2) 
