@@ -155,9 +155,9 @@ class BSplineClass:
 
         # Incoming inspection, fit the upper node number, etc.
         if  self.Knots_len< self.degree+1:
-            raise StandardError("SPLINE: degree greater than number of control points.")
+            raise Exception("SPLINE: degree greater than number of control points.")
         if self.Knots_len != (self.CPts_len + self.degree+1):
-            raise StandardError("SPLINE: Knot/Control Point/degree number error.")
+            raise Exception("SPLINE: Knot/Control Point/degree number error.")
 
     #Modified Version of Algorithm A3.2 from "THE NURBS BOOK" pg.93
     def bspline_ders_evaluate(self,n=0,u=0):
@@ -664,7 +664,7 @@ class DXF_CLASS:
             flag=0
             lpcnt=-1
             try:
-                xy_data = zip(e.data["10"], e.data["20"])
+                xy_data = list(zip(e.data["10"], e.data["20"]))
             except:
                 self.dxf_message("DXF Import zero length %s Ignored" %(e.type))
                 xy_data = []
@@ -756,7 +756,7 @@ class DXF_CLASS:
                 self.Knots[i] = (self.Knots[i]-kmin)/(kmax-kmin)
 
             try:
-                xy_data = zip(e.data["10"], e.data["20"])
+                xy_data = list(zip(e.data["10"], e.data["20"]))
             except:
                 self.dxf_message("DXF Import zero length %s Ignored" %(e.type))
                 xy_data = []
@@ -896,7 +896,7 @@ class DXF_CLASS:
             flag=0
 
             try:
-                xy_data = zip(e.data["10"], e.data["20"])
+                xy_data = list(zip(e.data["10"], e.data["20"]))
             except:
                 self.dxf_message("DXF Import zero length %s Ignored" %(e.type))
                 xy_data = []

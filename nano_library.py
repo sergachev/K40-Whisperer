@@ -67,7 +67,7 @@ class K40_CLASS:
                 pass
         if cnt == self.n_timeouts:
             msg = "Too Many Transmission Errors (%d Status Timeouts)" %(cnt)
-            raise StandardError(msg)
+            raise Exception(msg)
                 
         response = None
         read_cnt = 0
@@ -82,19 +82,19 @@ class K40_CLASS:
         if response != None:
             if DEBUG:
                 if int(response[0]) != 255:
-                    print "0: ", response[0]
+                    print("0: ", response[0])
                 elif int(response[1]) != 206: 
-                    print "1: ", response[1]
+                    print("1: ", response[1])
                 elif int(response[2]) != 111:
-                    print "2: ", response[2]
+                    print("2: ", response[2])
                 elif int(response[3]) != 8:
-                    print "3: ", response[3]
+                    print("3: ", response[3])
                 elif int(response[4]) != 19: #Get a 3 if you try to initialize when already initialized
-                    print "4: ", response[4]
+                    print("4: ", response[4])
                 elif int(response[5]) != 0:
-                    print "5: ", response[5]
+                    print("5: ", response[5])
                 else:
-                    print ".",
+                    print(".", end=' ')
             
             if response[1]==self.OK          or \
                response[1]==self.BUFFER_FULL or \
@@ -182,7 +182,7 @@ class K40_CLASS:
                     cnt = 2
                     
                     if stop_calc[0]==True:
-                        raise StandardError("Action Stopped by User.")
+                        raise Exception("Action Stopped by User.")
                 packet[cnt]=data[i]
                 cnt=cnt+1
         packet[-1]=self.OneWireCRC(packet[1:len(packet)-2])
@@ -244,15 +244,15 @@ class K40_CLASS:
         if crc_cnt == self.n_timeouts:
             msg = "Too Many Transmission Errors (%d CRC Errors)" %(crc_cnt)
             update_gui(msg)
-            raise StandardError(msg)
+            raise Exception(msg)
         if timeout_cnt == self.n_timeouts:
             msg = "Too Many Transmission Errors (%d Timeouts)" %(timeout_cnt)
             update_gui(msg)
-            raise StandardError(msg)
+            raise Exception(msg)
         if stop_calc[0]:
             msg="Action Stopped by User."
             update_gui(msg)
-            raise StandardError(msg)
+            raise Exception(msg)
         
 
     def send_packet(self,line):
@@ -272,19 +272,19 @@ class K40_CLASS:
         # find the device
         self.dev = usb.core.find(idVendor=0x1a86, idProduct=0x5512)
         if self.dev is None:
-            raise StandardError("Laser USB Device not found.")
+            raise Exception("Laser USB Device not found.")
             #return "Laser USB Device not found."
 
         if verbose:
             print("-------------- dev --------------")
-            print(self.dev)
+            print((self.dev))
         # set the active configuration. With no arguments, the first
         # configuration will be the active one
         try:
             self.dev.set_configuration()
         except:
             #return "Unable to set USB Device configuration."
-            raise StandardError("Unable to set USB Device configuration.")
+            raise Exception("Unable to set USB Device configuration.")
 
         # get an endpoint instance
         cfg = self.dev.get_active_configuration()
@@ -303,7 +303,7 @@ class K40_CLASS:
                 usb.util.endpoint_direction(e.bEndpointAddress) == \
                 usb.util.ENDPOINT_OUT)
         if ep == None:
-            raise StandardError("Unable to match the USB 'OUT' endpoint.")
+            raise Exception("Unable to match the USB 'OUT' endpoint.")
         if verbose:
             print ("-------------- ep --------------")
             print (ep)
@@ -338,7 +338,7 @@ if __name__ == "__main__":
         os._exit(0) 
 
     #k40.initialize_device()
-    print (k40.say_hello())
+    print((k40.say_hello()))
     #print k40.reset_position()
     #print k40.unlock_rail()
     print ("DONE")

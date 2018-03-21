@@ -37,15 +37,15 @@ from math import *
 
 # a dictionary of all of the xmlns prefixes in a standard inkscape doc
 NSS = {
-u'sodipodi' :u'http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd',
-u'cc'       :u'http://creativecommons.org/ns#',
-u'ccOLD'    :u'http://web.resource.org/cc/',
-u'svg'      :u'http://www.w3.org/2000/svg',
-u'dc'       :u'http://purl.org/dc/elements/1.1/',
-u'rdf'      :u'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-u'inkscape' :u'http://www.inkscape.org/namespaces/inkscape',
-u'xlink'    :u'http://www.w3.org/1999/xlink',
-u'xml'      :u'http://www.w3.org/XML/1998/namespace'
+'sodipodi' :'http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd',
+'cc'       :'http://creativecommons.org/ns#',
+'ccOLD'    :'http://web.resource.org/cc/',
+'svg'      :'http://www.w3.org/2000/svg',
+'dc'       :'http://purl.org/dc/elements/1.1/',
+'rdf'      :'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+'inkscape' :'http://www.inkscape.org/namespaces/inkscape',
+'xlink'    :'http://www.w3.org/1999/xlink',
+'xml'      :'http://www.w3.org/XML/1998/namespace'
 }
 
 
@@ -346,7 +346,7 @@ class Effect:
         svgwidth = self.getDocumentWidth()
         viewboxstr = self.document.getroot().get('viewBox')
         if viewboxstr:
-            unitmatch = re.compile('(%s)$' % '|'.join(self.__uuconv.keys()))
+            unitmatch = re.compile('(%s)$' % '|'.join(list(self.__uuconv.keys())))
             param = re.compile(r'(([-+]?[0-9]+(\.[0-9]*)?|[-+]?\.[0-9]+)([eE][-+]?[0-9]+)?)')
 
             p = param.match(svgwidth)
@@ -384,7 +384,7 @@ class Effect:
 
     def unittouu(self, string):
         """Returns userunits given a string representation of units in another system"""
-        unit = re.compile('(%s)$' % '|'.join(self.__uuconv.keys()))
+        unit = re.compile('(%s)$' % '|'.join(list(self.__uuconv.keys())))
         param = re.compile(r'(([-+]?[0-9]+(\.[0-9]*)?|[-+]?\.[0-9]+)([eE][-+]?[0-9]+)?)')
 
         p = param.match(string)

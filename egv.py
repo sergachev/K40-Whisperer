@@ -120,7 +120,7 @@ class egv:
     def make_distance(self,dist_mils):
         dist_mils=float(dist_mils)
         if abs(dist_mils-round(dist_mils,0)) > 0.000001:
-            raise StandardError('Distance values should be integer value (inches*1000)')
+            raise Exception('Distance values should be integer value (inches*1000)')
         DIST=0.0
         code = []
         v122 = 255
@@ -143,7 +143,7 @@ class egv:
             code.append(ord(num_str[1]))
             code.append(ord(num_str[2]))
         else:
-            raise StandardError("Error in EGV make_distance_in(): dist_milsA=",dist_milsA)
+            raise Exception("Error in EGV make_distance_in(): dist_milsA=",dist_milsA)
         return code
     
 
@@ -172,7 +172,7 @@ class egv:
             YCODE = self.DOWN
             
         if abs(dxmils-round(dxmils,0)) > 0.0 or abs(dymils-round(dymils,0)) > 0.0:
-            raise StandardError('Distance values should be integer value (inches*1000)')
+            raise Exception('Distance values should be integer value (inches*1000)')
 
         adx = abs(dxmils/1000.0)
         ady = abs(dymils/1000.0)
@@ -236,7 +236,7 @@ class egv:
             else:
                 error = max(DY-abs(dxmils),DX-abs(dymils))
             if error > 0:
-                raise StandardError("egv.py: Error delta =%f" %(error))
+                raise Exception("egv.py: Error delta =%f" %(error))
 
 
     def speed_code(self,Feed,B,M):
@@ -351,7 +351,7 @@ class egv:
 
         #################################################################
         else:
-            raise StandardError("Unknown Board Designation: %s" %(board_name))
+            raise Exception("Unknown Board Designation: %s" %(board_name))
         
         for c in speed_text:
             speed.append(ord(c))
@@ -439,7 +439,7 @@ class egv:
                 e0,e1,e2                = self.ecoord_adj(ecoords_in[i]  ,scale,FlipXoffset)
                 update_gui("Generating EGV Data: %.1f%%" %(100.0*float(i)/float(len(ecoords_in))))
                 if stop_calc[0]==True:
-                    raise StandardError("Action Stopped by User.")
+                    raise Exception("Action Stopped by User.")
             
                 if ( e2  == last_loop) and (not laser):
                     laser = True
@@ -487,9 +487,9 @@ class egv:
             scanline = []
             scanline_y = None
             if Raster_step < 0.0:
-                irange = range(len(ecoords_in))
+                irange = list(range(len(ecoords_in)))
             else:
-                irange = range(len(ecoords_in)-1,-1,-1)
+                irange = list(range(len(ecoords_in)-1,-1,-1))
                 
             for i in irange:
                 if i%1000 == 0:
@@ -532,7 +532,7 @@ class egv:
                     scan.append([e0,e1,e2])
                 update_gui("Generating EGV Data: %.1f%%" %(100.0*float(cnt)/float(len(scanline))))
                 if stop_calc[0]==True:
-                    raise StandardError("Action Stopped by User.")
+                    raise Exception("Action Stopped by User.")
                 cnt = cnt+1
                 ######################################
                 ## Flip direction and reset loop    ##
@@ -581,9 +581,9 @@ class egv:
                     lasty = y
                 ######################################
                 if sign == 1:
-                    rng = range(0,len(scan),1)
+                    rng = list(range(0,len(scan),1))
                 else:
-                    rng = range(len(scan)-1,-1,-1)
+                    rng = list(range(len(scan)-1,-1,-1))
                 ######################################
                 ## Pad row end if needed ##
                 ###########################
@@ -699,15 +699,15 @@ class egv:
 if __name__ == "__main__":
     EGV=egv()
     for value_in in [.1,.2,.3,.4,.5,.6,.7,.8,.9,1,2,3,4,5,6,7,8,9,10,20,30,40,50,70,90,100]:
-        print value_in,":",
+        print(value_in,":", end=' ')
         bname = "LASER-M2"
         step = 0
         val1=EGV.make_speed    (value_in,board_name=bname,Raster_step=step)
         #val2=EGV.make_speed_old(value_in,board_name=bname,Raster_step=step)
        # if val1 != val2 :
         for c in val1:
-            print chr(c),
-        print ""
+            print(chr(c), end=' ')
+        print("")
        #     for c in val2:
        #         print chr(c),
     #print ""
@@ -716,5 +716,5 @@ if __name__ == "__main__":
         cde=": "
         for c in EGV.make_distance(i):
             cde=cde+chr(c)
-        print i,cde
+        print(i,cde)
     print("DONE")

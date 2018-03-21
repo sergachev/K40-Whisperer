@@ -48,14 +48,14 @@ if VERSION == 3:
     MAXINT = sys.maxsize
     
 else:
-    from Tkinter import *
-    from tkFileDialog import *
-    import tkMessageBox
-    MAXINT = sys.maxint
+    from tkinter import *
+    from tkinter.filedialog import *
+    import tkinter.messagebox
+    MAXINT = sys.maxsize
 
 if VERSION < 3 and sys.version_info[1] < 6:
     def next(item):
-        return item.next()
+        return item.__next__()
     
 try:
     import psyco
@@ -1469,7 +1469,7 @@ class Application(Frame):
                 svg_reader.parse(self.SVG_FILE)
                 svg_reader.make_paths(txt2paths=True)
                 
-        except StandardError as e:
+        except Exception as e:
             msg1 = "SVG file load failed: "
             msg2 = "%s" %(e)
             self.statusMessage.set((msg1+msg2).split("\n")[0] )
@@ -1613,7 +1613,7 @@ class Application(Frame):
                         self.statusMessage.set("Raster Engraving: Creating Scan Lines: %.1f %%" %( (100.0*i)/him ) )
                         self.master.update()
                     if self.stop[0]==True:
-                        raise StandardError("Action stopped by User.")
+                        raise Exception("Action stopped by User.")
                     line = []
                     cnt=1
                     for j in range(1,wim):
@@ -1628,7 +1628,7 @@ class Application(Frame):
                     
                     y=(him-i)/1000.0
                     x=0
-                    rng = range(0,len(line),1)
+                    rng = list(range(0,len(line),1))
                         
                     for i in rng:
                         seg = line[i]
@@ -1724,7 +1724,7 @@ class Application(Frame):
                 for line in MSG:
                     Error_Text = Error_Text + line + "\n"
                     message_box("G-Code Messages", Error_Text)
-        except StandardError as e:
+        except Exception as e:
             msg1 = "G-Code Load Failed:  "
             msg2 = "Filename: %s" %(filename)
             msg3 = "%s" %(e)
@@ -1749,7 +1749,7 @@ class Application(Frame):
             fd = open(self.DXF_FILE)
             dxf_import.GET_DXF_DATA(fd,tol_deg=segarc)
             fd.close()
-        except StandardError as e:
+        except Exception as e:
             msg1 = "DXF Load Failed:"
             msg2 = "%s" %(e)
             self.statusMessage.set((msg1+msg2).split("\n")[0] )
@@ -2122,7 +2122,7 @@ class Application(Frame):
                     dxmils = int(round(dxmils *float(self.LaserXscale.get())))
                     dymils = int(round(dymils *float(self.LaserYscale.get())))
                 self.k40.rapid_move(dxmils,dymils)
-        except StandardError as e:
+        except Exception as e:
             msg1 = "Rapid Move Failed: "
             msg2 = "%s" %(e)
             if msg2 == "":
@@ -2194,7 +2194,7 @@ class Application(Frame):
             else:
                 self.statusbar.configure( bg = 'yellow' )
                 self.statusMessage.set("No raster data to engrave")
-        except StandardError as e:
+        except Exception as e:
             msg1 = "Making Raster Data Stopped: "
             msg2 = "%s" %(e)
             self.statusMessage.set((msg1+msg2).split("\n")[0] )
@@ -2376,7 +2376,7 @@ class Application(Frame):
             self.remove_self_references(lns,self.LoopTree[i])
 
         self.order=[]
-        self.loops = range(Nloops)
+        self.loops = list(range(Nloops))
         for i in range(Nloops):
             if self.LoopTree[i]!=[]:
                 self.addlist(self.LoopTree[i])
@@ -2593,10 +2593,10 @@ class Application(Frame):
             self.send_egv_data(data, num_passes)
             self.menu_View_Refresh()
         except MemoryError as e:
-            raise StandardError("Memory Error:  Out of Memory.")
+            raise Exception("Memory Error:  Out of Memory.")
             debug_message(traceback.format_exc())
         
-        except StandardError as e:
+        except Exception as e:
             msg1 = "Sending Data Stopped: "
             msg2 = "%s" %(e)
             if msg2 == "":
@@ -2616,7 +2616,7 @@ class Application(Frame):
             self.master.update()
         
         if DEBUG:
-            print "Saving Data to File...."
+            print("Saving Data to File....")
             self.write_egv_to_file(data)
         #self.set_gui("normal")
         self.menu_View_Refresh()
@@ -2705,7 +2705,7 @@ class Application(Frame):
             else:
                 self.Unlock()
             
-        except StandardError as e:
+        except Exception as e:
             error_text = "%s" %(e)
             if "BACKEND" in error_text.upper():
                 error_text = error_text + " (libUSB driver not installed)"
@@ -3688,7 +3688,7 @@ def message_box(title,message):
     if VERSION == 3:
         tkinter.messagebox.showinfo(title,message)
     else:
-        tkMessageBox.showinfo(title,message)
+        tkinter.messagebox.showinfo(title,message)
         pass
 
 ################################################################################
@@ -3698,7 +3698,7 @@ def message_ask_ok_cancel(title, mess):
     if VERSION == 3:
         result=tkinter.messagebox.askokcancel(title, mess)
     else:
-        result=tkMessageBox.askokcancel(title, mess)
+        result=tkinter.messagebox.askokcancel(title, mess)
     return result
 
 ################################################################################
@@ -3711,14 +3711,14 @@ def debug_message(message):
         if VERSION == 3:
             tkinter.messagebox.showinfo(title,message)
         else:
-            tkMessageBox.showinfo(title,message)
+            tkinter.messagebox.showinfo(title,message)
             pass
 
 ################################################################################
 #                         Choose Units Dialog                                  #
 ################################################################################
-import tkSimpleDialog
-class UnitsDialog(tkSimpleDialog.Dialog):
+import tkinter.simpledialog
+class UnitsDialog(tkinter.simpledialog.Dialog):
     def body(self, master):
         self.resizable(0,0)
         self.title('Units')
